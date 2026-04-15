@@ -1,0 +1,57 @@
+.toast-container {
+    position: fixed;
+    z-index: 1056;
+    margin: 5px
+}
+
+.top-right {
+    top: 3%;
+    right: 3%;
+}
+
+.top-left {
+    top: 3%;
+    left: 3%;
+}
+
+.top-center {
+    transform: translateX(-50%);
+    top: 3%;
+    left: 50%
+}
+
+.bottom-right {
+    right: 3%;
+    bottom: 3%;
+}
+
+.bottom-left {
+    left: 3%;
+    bottom: 3%;
+}
+
+.bottom-center {
+    transform: translateX(-50%);
+    bottom: 3%;
+    left: 50%
+}
+
+.toast-container>.toast {
+    min-width: 150px;
+    background: 0 0;
+}
+
+.toast-container>.toast>.toast-header {
+    border: none
+}
+
+.toast-container>.toast>.toast-header strong {
+    padding-right: 20px
+}
+
+.toast-container>.toast>.toast-body {
+    --bg-border-radius: 0.5rem;
+    background: #fff;
+    border-bottom-left-radius: var(--bg-border-radius);
+    border-bottom-right-radius: var(--bg-border-radius);
+}

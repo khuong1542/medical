@@ -1,0 +1,249 @@
+label.required::after{
+    content: '*';
+    color: red;
+    padding-left: 2px;
+}
+
+.frm-password {
+    position: relative;
+}
+
+.eye-show {
+    position: absolute;
+    right: 1.5rem;
+    top: .625rem;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.upload-container {
+    width: 9rem;
+    height: 9rem;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.upload-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+}
+
+.upload-container input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-container .icon-image-plus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #ccc;
+}
+
+.delete-image-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    display: none;
+}
+
+.delete-image-btn span {
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.group-option {
+    flex-wrap: nowrap;
+}
+
+/* Thêm mới sản phẩm */
+
+/* Box ảnh chính và box ảnh trong danh sách dùng chung style */
+
+.gallery-image,
+.gallery-box {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px dashed #ccc;
+    background: white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+    user-select: none;
+
+    /* Center content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    color: #ccc;
+    flex-direction: column;
+    text-align: center;
+}
+
+/* Khi có ảnh thì đổi viền và bỏ icon */
+.gallery-image.has-image {
+    border: 1px solid #ddd;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+    cursor: default;
+    color: unset;
+    font-weight: unset;
+    font-size: unset;
+}
+
+.gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    border-radius: 8px;
+}
+
+/* Icon & text trong box chưa có ảnh */
+.gallery-image .icon-text {
+    user-select: none;
+}
+
+.gallery-image .icon-text::before {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Nút xóa */
+.remove-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 16px;
+    text-align: center;
+    user-select: none;
+    display: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Box thêm ảnh */
+.gallery-box {
+    cursor: pointer;
+}
+
+.gallery-box:hover {
+    background: #fff3e0;
+}
+
+.gallery-box input {
+    display: none;
+}
+
+.gallery-box span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+}
+
+.gallery-box .icon-image-plus {
+    font-size: 20px;
+    margin-bottom: 4px;
+    user-select: none;
+    color: #ccc;
+}
+
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    user-select: none;
+}
+
+.upload-wrapper {
+	width: 200px;
+	height: 200px;
+	margin-top: 1rem;
+}
+
+.upload-preview {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	font-weight: normal;
+}
+
+.preview-image {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border: 2px dashed #ccc;
+}
+
+.preview-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.preview-image.preview {
+	border: none;
+}
+
+.upload-preview:has(.preview) .upload-context {
+	display: none;
+}
+
+.upload-context {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: .5rem;
+}
+
+.upload-context .upload-context-title {
+	display: flex;
+	align-items: center;
+	gap: .2rem;
+	font-family: bold;
+	font-size: 1.2rem;
+}
