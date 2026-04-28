@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Services\Admin\DoctorService;
 use Illuminate\Http\Request;
+use Throwable;
 
 class DoctorController extends Controller
 {
-	public function __construct(private DoctorService $service) {}
+	public function __construct(private readonly DoctorService $service) {}
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -17,7 +18,10 @@ class DoctorController extends Controller
 		return view('admin.pages.doctors.index');
 	}
 
-	public function loadList(Request $request)
+    /**
+     * @throws Throwable
+     */
+    public function loadList(Request $request)
 	{
 		$result = [
 			'datas' => $this->service->loadList($request->all()),
@@ -40,12 +44,13 @@ class DoctorController extends Controller
 		return view('admin.pages.doctors.form', $result);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 */
+    /**
+     * Store a newly created resource in storage.
+     * @throws Throwable
+     */
 	public function store(Request $request)
 	{
-		$result = $this->service->store($request->all());
+		$result = $this->service->updateOrStore($request->all());
 		return redirect(route('doctors.index'));
 	}
 
@@ -71,12 +76,13 @@ class DoctorController extends Controller
 		return view('admin.pages.doctors.form', $result);
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 */
+    /**
+     * Update the specified resource in storage.
+     * @throws Throwable
+     */
 	public function update(Request $request, string $id)
 	{
-		$result = $this->service->store($request->all(), $id);
+		$result = $this->service->updateOrStore($request->all(), $id);
 		return redirect(route('doctors.index'));
 	}
 
@@ -88,9 +94,10 @@ class DoctorController extends Controller
 		//
 	}
 
-	/**
-	 * Cập nhật trạng thái
-	 */
+    /**
+     * Cập nhật trạng thái
+     * @throws Throwable
+     */
 	public function changeStatus(Request $request, $id)
 	{
 		\DB::beginTransaction();

@@ -304,4 +304,20 @@ abstract class BaseService
 	{
 		$this->repository->detachMany($model, $relation, $ids);
 	}
+
+    protected function buildListOptions(array $params, array $searchFields = ['name', 'code']): array
+    {
+        $sortField = $params['sort'] ?? 'order';
+        $sortType = (isset($params['sortType']) && $params['sortType'] == 1) ? 'asc' : 'desc';
+
+        return [
+            'page' => $params['page'] ?? OFFSET,
+            'limit' => $params['limit'] ?? LIMIT,
+            'orderBy' => [
+                $sortField => $sortType,
+            ],
+            'keyword' => $params['keyword'] ?? '',
+            'search_field' => $searchFields,
+        ];
+    }
 }

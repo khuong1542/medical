@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Repositories;
+namespace App\Http\Repositories\Admin;
 
 use App\Base\BaseRepository;
 use App\Models\Doctor;
@@ -12,33 +12,48 @@ class DoctorRepository extends BaseRepository
 		parent::__construct();
 	}
 
-	public function model()
+	public function model(): string
 	{
 		return Doctor::class;
 	}
 
-	public function updateOrStore($data)
+	public function updateOrStore(array $data): \Illuminate\Database\Eloquent\Model
 	{
 		if (hasValue($data, 'order')) {
 			updateOrder(new $this->model(), $data);
 		}
 
-		if (hasValue($data, 'id')) {
-			$sql = $this->find($data['id']);
-			$sql->updated_at = now();
-		} else {
-			$sql = new $this->model();
-			$sql->id = (string)\Str::uuid();
-			$sql->created_at = now();
+		$id = $data['id'] ?? null;
+
+		$columns = [
+			'facility_id',
+			'specialty_id',
+			'code',
+			'name',
+			'email',
+			'phone',
+			'experience_years',
+			'description',
+			'order',
+		];
+
+		$payload = [];
+
+		foreach ($columns as $column) {
+			$payload[$column] = !isNullOrUnset($data, $column) ? $data[$column] : null;
 		}
 
-		$columns = ['facility_id', 'specialty_id', 'code', 'name', 'email', 'phone', 'experience_years', 'description', 'order'];
-		foreach ($columns as $column) {
-			$sql->{$column} = !isNullOrUnset($data, $column) ? $data[$column] : null;
+		$payload['status'] = hasValue($data, 'status') && $data['status'] === 'on' ? 1 : 0;
+
+		if (hasValue($data, 'images')) {
+			$payload['images'] = $data['images'];
 		}
-		$sql->status = hasValue($data, 'status') && $data['status'] === 'on' ? 1 : 0;
-		$sql->images = hasValue($data, 'images') ? $data['images'] : $sql->images;
-		$sql->save();
-		return $sql;
+
+		$modelClass = $this->model;
+
+		return $modelClass::query()->updateOrCreate(
+			['id' => $id ?? (string) \Str::uuid()],
+			$payload
+		);
 	}
 }
