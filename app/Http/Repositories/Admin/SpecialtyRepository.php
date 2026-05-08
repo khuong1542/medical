@@ -3,11 +3,11 @@
 namespace App\Http\Repositories\Admin;
 
 use App\Base\BaseRepository;
-use App\Models\Facility;
+use App\Models\Specialty;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FacilityRepository extends BaseRepository
+class SpecialtyRepository extends BaseRepository
 {
 	public function __construct()
 	{
@@ -16,7 +16,7 @@ class FacilityRepository extends BaseRepository
 
 	public function model(): string
 	{
-		return Facility::class;
+		return Specialty::class;
 	}
 
 	/**
@@ -36,16 +36,7 @@ class FacilityRepository extends BaseRepository
 		$columns = [
 			'code',
 			'name',
-			'type',
-			'tax_code',
-			'address',
-			'tel',
-			'email',
-			'website',
-			'map_url',
-			'description',
 			'order',
-			'status'
 		];
 
 		$payload = [];
@@ -55,10 +46,6 @@ class FacilityRepository extends BaseRepository
 		}
 
 		$payload['status'] = hasValue($data, 'status') && $data['status'] === 'on' ? 1 : 0;
-
-		if (hasValue($data, 'images')) {
-			$payload['images'] = $data['images'];
-		}
 
 		$modelClass = $this->model;
 

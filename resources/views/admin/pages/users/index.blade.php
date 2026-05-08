@@ -17,7 +17,7 @@
 				<div class="page-title-box d-sm-flex align-items-center justify-content-between">
 					<h4 class="mb-sm-0">@lang('admin/messages.sidebar.users')</h4>
 					<div class="page-title-right">
-						@include('admin.layouts.button.form', ['order' => true, 'add' => true, 'edit' => true, 'delete' => true])
+						@include('admin.layouts.index.form', ['order' => true, 'add' => true, 'edit' => true, 'delete' => true])
 					</div>
 				</div>
 			</div>

@@ -8,20 +8,20 @@
 				<div class="col-sm mb-2 mb-sm-0">
 					<nav aria-label="breadcrumb">
 						<ol class="breadcrumb breadcrumb-no-gutter">
-							<li class="breadcrumb-item"><a class="breadcrumb-link" href="{{ route('facilities.index') }}">@lang('admin/messages.facility.title')</a></li>
-							<li class="breadcrumb-item active" aria-current="page">{{ isset($data->id) ? __('admin/messages.facility.form_title_edit') : __('admin/messages.facility.form_title_add') }}</li>
+							<li class="breadcrumb-item"><a class="breadcrumb-link" href="{{ route('specialties.index') }}">@lang('admin/messages.specialty.title')</a></li>
+							<li class="breadcrumb-item active" aria-current="page">{{ isset($data->id) ? __('admin/messages.specialty.form_title_edit') : __('admin/messages.specialty.form_title_add') }}</li>
 						</ol>
 					</nav>
 				</div>
 			</div>
 		</div>
-		<form action="{{ isset($data->id) ? route('facilities.update', $data->id) : route('facilities.store')}}" id="frm_add" class="mb-3" method="post" enctype="multipart/form-data" autocomplete="off">
+		<form action="{{ isset($data->id) ? route('specialties.update', $data->id) : route('specialties.store')}}" id="frm_add" class="mb-3" method="post" enctype="multipart/form-data" autocomplete="off">
 			@csrf
 			@if(isset($data->id))
 				@method('PUT')
 			@endif
 
-			@include('admin.layouts.form.button', ['url' => route('facilities.index')])
+			@include('admin.layouts.form.button', ['url' => route('specialties.index')])
 			<div class="row my-3">
 				<div class="col-md-8">
 					<div class="card mb-0">
@@ -44,7 +44,7 @@
 							</div>
 							<div class="mb-3 grid grid-2 gap-3">
 								<div class="form-group">
-									<label for="type" class="required"><span>@lang('admin/messages.facility.type')</span></label>
+									<label for="type" class="required"><span>@lang('admin/messages.specialty.type')</span></label>
 									<select name="type" id="type" class="form-control chzn-select {{ $errors->has('type') ? 'is-invalid' : '' }}">
 										<option selected disabled>@lang('admin/shared.select-item')</option>
 										@if(isset($types) && count($types) > 0)
@@ -58,8 +58,8 @@
 									@enderror
 								</div>
 								<div class="form-group">
-									<label for="tax_code"><span>@lang('admin/messages.facility.tax_code')</span></label>
-									<input type="text" name="tax_code" id="tax_code" class="form-control {{ $errors->has('tax_code') ? 'is-invalid' : '' }}" placeholder="@lang('admin/messages.facility.tax_code')" value="{{ old('tax_code', $data->tax_code ?? '') }}">
+									<label for="tax_code"><span>@lang('admin/messages.specialty.tax_code')</span></label>
+									<input type="text" name="tax_code" id="tax_code" class="form-control {{ $errors->has('tax_code') ? 'is-invalid' : '' }}" placeholder="@lang('admin/messages.specialty.tax_code')" value="{{ old('tax_code', $data->tax_code ?? '') }}">
 									@error('tax_code')
 										<span class="invalid-feedback">{{ $message }}</span>
 									@enderror
@@ -121,33 +121,6 @@
 				<div class="col-md-4">
 					<div class="card mb-3">
 						<div class="card-body">
-							<div class="mb-3 form-group">
-								@php
-									$images = json_decode(($data->images ?? ''), true);
-								@endphp
-								<label class="required"><span>@lang('admin/shared.image')</span></label>
-								<label for="images" class="btn btn-default">@lang('admin/shared.choose-image')</label>
-								<div class="upload-wrapper">
-									<input hidden type="file" name="images" id="images" onchange="showImage(this)">
-									<label class="upload-preview" for="images">
-										<div class="preview-image {{ isset($images['url']) ? 'preview' : '' }}">
-											@if(isset($images['url']))
-												<img src="{{ $images['url'] }}" alt="{{ $images['name'] }}">
-											@endif
-										</div>
-										<div class="upload-context">
-											<div class="upload-context-title text-primary">
-												<i class="fa-solid fa-file-image"></i>
-												<span>@lang('admin/shared.choose-image')</span>
-											</div>
-											<div class="upload-context-note">@lang('admin/shared.max-file') 10MB</div>
-										</div>
-									</label>
-								</div>
-								@error('images')
-									<span class="invalid-feedback d-block">{{ $message }}</span>
-								@enderror
-							</div>
 							<div class="mb-3 form-group">
 								<label for="order" class="required"><span>@lang('admin/shared.order')</span></label>
 								<input type="number" name="order" id="order" class="form-control {{ $errors->has('order') ? 'is-invalid' : '' }}" placeholder="@lang('admin/shared.order')" value="{{ old('order', $data->order ?? $order ?? '') }}">

@@ -33,6 +33,9 @@ class DoctorService extends BaseService
 	public function loadList(array $payload): mixed
 	{
 		$conditions = [];
+		$payload['orderBy'] = [
+			'order' => 'desc',
+		];
 		$options = $this->buildListOptions($payload, ['name', 'code']);
 		return $this->repository->list($conditions, ['facilities', 'specialty'], $options);
 	}
@@ -50,8 +53,8 @@ class DoctorService extends BaseService
 	{
 		DB::beginTransaction();
 		try {
-            if (isset($data['images']) && $data['images'] instanceof \Illuminate\Http\UploadedFile) {
-				$images = FileHelper::upload((array)$data['images'], 'attach-file/doctors');
+			if (isset($data['images']) && $data['images'] instanceof \Illuminate\Http\UploadedFile) {
+				$images = FileHelper::upload($data['images'], 'attach-file/doctors');
 				$data['images'] = json_encode($images);
 			}
 			$data['id'] = $id;
@@ -105,7 +108,9 @@ class DoctorService extends BaseService
 		DB::beginTransaction();
 		try {
 			$this->logger->setChannel('UpdateOrder')->log('Params', $payload);
-			$data = $this->repository->select('*')->orderBy('order')->get();
+			$payload['all'] = true;
+			$options = $this->buildListOptions($payload, []);
+			$data = $this->repository->list([], [], $options);
 			$i = 1;
 			foreach ($data as $key => $value) {
 				$value->update(['order' => $i++]);

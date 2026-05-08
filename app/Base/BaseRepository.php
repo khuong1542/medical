@@ -129,10 +129,10 @@ abstract class BaseRepository
 		array $columns = ['*'],
 	): Collection|LengthAwarePaginator {
 		$options = array_merge([
-			'keyword'   => null,
+			'keyword'      => null,
 			'search_field' => null,
-			'limit'    => null,
-			'orderBy'  => [],
+			'limit'        => null,
+			'orderBy'      => [],
 		], $options);
 
 		$query = $this->model->select($columns);

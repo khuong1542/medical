@@ -18,16 +18,16 @@ class DoctorController extends Controller
 		return view('admin.pages.doctors.index');
 	}
 
-    /**
-     * @throws Throwable
-     */
-    public function loadList(Request $request)
+	/**
+	 * @throws Throwable
+	 */
+	public function loadList(Request $request)
 	{
 		$result = [
 			'datas' => $this->service->loadList($request->all()),
 		];
 		return [
-			'arrData' => view('admin.pages.doctors.loadList', $result)->render(),
+			'arrData' => view('admin.pages.doctors.list', $result)->render(),
 			'perPage' => $request->offset ?? OFFSET,
 		];
 	}
@@ -44,10 +44,10 @@ class DoctorController extends Controller
 		return view('admin.pages.doctors.form', $result);
 	}
 
-    /**
-     * Store a newly created resource in storage.
-     * @throws Throwable
-     */
+	/**
+	 * Store a newly created resource in storage.
+	 * @throws Throwable
+	 */
 	public function store(Request $request)
 	{
 		$result = $this->service->updateOrStore($request->all());
@@ -76,10 +76,10 @@ class DoctorController extends Controller
 		return view('admin.pages.doctors.form', $result);
 	}
 
-    /**
-     * Update the specified resource in storage.
-     * @throws Throwable
-     */
+	/**
+	 * Update the specified resource in storage.
+	 * @throws Throwable
+	 */
 	public function update(Request $request, string $id)
 	{
 		$result = $this->service->updateOrStore($request->all(), $id);
@@ -87,27 +87,42 @@ class DoctorController extends Controller
 	}
 
 	/**
-	 * Remove the specified resource from storage.
+	 * Delete multiple records.
+	 *
+	 * @param Request $request
+	 * @return array
+	 *
+	 * @throws Throwable
 	 */
-	public function destroy(string $id)
+	public function destroy(Request $request)
 	{
-		//
+		return $this->service->destroy($request->all());
 	}
 
-    /**
-     * Cập nhật trạng thái
-     * @throws Throwable
-     */
-	public function changeStatus(Request $request, $id)
+	/**
+	* Normalize order field for all records (1 → N).
+	*
+	* @param Request $request
+	* @return array
+	*
+	* @throws Throwable
+	*/
+	public function updateOrder(Request $request)
 	{
-		\DB::beginTransaction();
-		try {
-			$result = $this->service->changeStatus($request->all(), $id);
-			\DB::commit();
-			return $result;
-		} catch (\Exception $e) {
-			\DB::rollback();
-			return array('status' => false, 'message' => $e->getMessage());
-		}
+		return $this->service->updateOrder($request->all());
+	}
+
+	/**
+	* Update resource status.
+	*
+	* @param Request $request
+	* @param string $id
+	* @return array
+	*
+	* @throws Throwable
+	*/
+	public function changeStatus(Request $request, string $id)
+	{
+		return $this->service->changeStatus($request->all(), $id);
 	}
 }

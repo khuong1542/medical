@@ -8,29 +8,25 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
-#[Signature('make:base {name} {--admin}')]
+#[Signature('make:module-admin {name}')]
 #[Description('Generate Controller, Service, Repository, Model, View')]
-class MakeFileBaseCommand extends Command
+class MakeModuleAdminCommand extends Command
 {
-	const string ADMIN = 'Admin';
-	const string CLIENT = 'Client';
 	const int SUCCESS = 0;
 
 	public function handle(): int
 	{
 		$name = Str::studly($this->argument('name'));
-		$isAdmin = $this->option('admin');
-
-		$type = $isAdmin ? self::ADMIN : self::CLIENT;
+		$type = 'Admin';
 
 		$this->createController($name, $type);
 		$this->createRequest($name, $type);
 		$this->createService($name, $type);
 		$this->createRepository($name, $type);
 		$this->createModel($name);
-		$this->createView($name, $type);
+		$this->createView($name);
 
-		$this->info("Generated {$name} for {$type}");
+		$this->components->info("Generated $name for $type successfully.");
 
 		return self::SUCCESS;
 	}
@@ -39,77 +35,81 @@ class MakeFileBaseCommand extends Command
 	// CREATE FILES
 	// ========================
 
-	private function createController($name, $type): void
+	private function createController(string $name, string $type): void
 	{
-		$path = app_path("Http/Controllers/{$type}/{$name}Controller.php");
+		$path = app_path("Http\\Controllers\\$type\\{$name}Controller.php");
 
 		$this->put($path, $this->controllerStub($name, $type));
 	}
 
-	private function createRequest($name, $type): void
+	private function createRequest(string $name, string $type): void
 	{
-		$basePath = app_path("Http/Requests/{$type}/{$name}");
+		$basePath = app_path("Http\\Requests\\$type\\$name");
 
-		$storePath = "{$basePath}/Store{$name}Request.php";
-		$updatePath = "{$basePath}/Update{$name}Request.php";
+		$storePath = "$basePath\\Store{$name}Request.php";
+		$updatePath = "$basePath\\Update{$name}Request.php";
 
 		$this->put($storePath, $this->requestStub($name, $type, 'Store'));
 		$this->put($updatePath, $this->requestStub($name, $type, 'Update'));
 	}
 
-	private function createService($name, $type): void
+	private function createService(string $name, string $type): void
 	{
-		$path = app_path("Http/Services/{$type}/{$name}Service.php");
+		$path = app_path("Http\\Services\\$type\\{$name}Service.php");
 
 		$this->put($path, $this->serviceStub($name, $type));
 	}
 
-	private function createRepository($name, $type): void
+	private function createRepository(string $name, string $type): void
 	{
-		$path = app_path("Http/Repositories/{$type}/{$name}Repository.php");
+		$path = app_path("Http\\Repositories\\$type\\{$name}Repository.php");
 
 		$this->put($path, $this->repositoryStub($name, $type));
 	}
 
 	private function createModel(string $name): void
 	{
-		$path = app_path("Models/{$name}.php");
+		$path = app_path("Models\\$name.php");
 
-		if (!File::exists($path)) {
-			$this->put($path, $this->modelStub($name));
-		}
+		$this->put($path, $this->modelStub($name));
 	}
 
-	private function createView(string $name, string $type): void
+	private function createView(string $name): void
 	{
 		$lower = Str::lower($name);
 		$plural = Str::plural($lower);
 
-		$viewBase = $type === self::ADMIN ? "admin/pages/{$plural}" : "client/pages/{$plural}";
+		$viewBase = "admin\\pages\\$plural";
 
-		$pathIndex = resource_path("views/{$viewBase}/index.blade.php");
-		if (File::exists($pathIndex)) {
-			$this->put($pathIndex, "<h1>{$name}</h1>");
+		$pathIndex = resource_path("views\\$viewBase\\index.blade.php");
+		$pathList = resource_path("views\\$viewBase\\list.blade.php");
+		$pathForm = resource_path("views\\$viewBase\\form.blade.php");
+
+		if (!File::exists($pathIndex)) {
+			$this->put($pathIndex, "<h1>$name</h1>");
 		}
 
-		if ($type === self::ADMIN) {
-			$pathLoadList = resource_path("views/{$viewBase}/loadList.blade.php");
-			$pathForm = resource_path("views/{$viewBase}/form.blade.php");
+		if (!File::exists($pathList)) {
+			$this->put($pathList, "<h1>List $name</h1>");
+		}
 
-			if (File::exists($pathLoadList)) {
-				$this->put($pathLoadList, "<h1>List {$name}</h1>");
-			}
-
-			if (File::exists($pathForm)) {
-				$this->put($pathForm, "<h1>Form {$name}</h1>");
-			}
+		if (!File::exists($pathForm)) {
+			$this->put($pathForm, "<h1>Form $name</h1>");
 		}
 	}
 
-	private function put($path, $content): void
+	private function put(string $path, string $content): void
 	{
+		$relativePath = str_replace(base_path() . DIRECTORY_SEPARATOR, '', $path);
+		if (File::exists($path)) {
+			$this->components->error("$relativePath already exists.");
+			return;
+		}
+
 		File::ensureDirectoryExists(dirname($path));
 		File::put($path, $content);
+
+		$this->components->twoColumnDetail($relativePath, 'Created');
 	}
 
 	// ========================
@@ -118,25 +118,25 @@ class MakeFileBaseCommand extends Command
 
 	private function controllerStub(string $name, string $type): string
 	{
-		$namespace = "App\\Http\\Controllers\\{$type}";
-		$service = "App\\Http\\Services\\{$type}\\{$name}Service";
-		$storeRequest = "App\\Http\\Requests\\{$type}\\{$name}\\Store{$name}Request";
-		$updateRequest = "App\\Http\\Requests\\{$type}\\{$name}\\Update{$name}Request";
+		$namespace = "App\\Http\\Controllers\\$type";
+		$service = "App\\Http\\Services\\$type\\{$name}Service";
+		$storeRequest = "App\\Http\\Requests\\$type\\$name\\Store{$name}Request";
+		$updateRequest = "App\\Http\\Requests\\$type\\$name\\Update{$name}Request";
 
 		$lower = strtolower($name);
 		$plural = \Str::plural($lower);
 
-		$viewBase = $type === self::ADMIN ? "admin.pages.{$plural}" : "client.pages.{$plural}";
+		$viewBase = "admin.pages.$plural";
 
-        return <<<PHP
+		return <<<PHP
 		<?php
 
-		namespace {$namespace};
+		namespace $namespace;
 
 		use App\Http\Controllers\Controller;
-		use {$storeRequest};
-		use {$updateRequest};
-		use {$service};
+		use $storeRequest;
+		use $updateRequest;
+		use $service;
 		use Illuminate\Http\RedirectResponse;
 		use Illuminate\Http\Request;
 		use Illuminate\View\View;
@@ -149,7 +149,7 @@ class MakeFileBaseCommand extends Command
 			public function index()
 			{
 				\$result = [];
-				return view('{$viewBase}.index', \$result);
+				return view('$viewBase.index', \$result);
 			}
 
 			/**
@@ -166,7 +166,7 @@ class MakeFileBaseCommand extends Command
 					'datas' => \$this->service->loadList(\$request->all()),
 				];
 				return [
-					'arrData' => view('{$viewBase}.loadList', \$result)->render(),
+					'arrData' => view('$viewBase.list', \$result)->render(),
 					'perPage' => \$request->offset ?? OFFSET,
 				];
 			}
@@ -182,7 +182,7 @@ class MakeFileBaseCommand extends Command
 					'checked' => "checked=true",
 					'order' => \$this->service->count() + 1,
 				];
-				return view('{$viewBase}.form', \$result);
+				return view('$viewBase.form', \$result);
 			}
 
 			/**
@@ -197,7 +197,7 @@ class MakeFileBaseCommand extends Command
 			{
 				try {
 					\$this->service->updateOrStore(\$request->all());
-					return redirect(route('{$plural}.index'));
+					return redirect(route('$plural.index'));
 				} catch (\Exception \$e) {
 					return redirect()->back()->withInput()->with('error', 'Create failed, please try again');
 				}
@@ -212,7 +212,7 @@ class MakeFileBaseCommand extends Command
 			public function show(string \$id)
 			{
 				\$data = \$this->service->find(\$id);
-				return view('{$viewBase}.show', compact('data'));
+				return view('$viewBase.show', compact('data'));
 			}
 
 			/**
@@ -228,7 +228,7 @@ class MakeFileBaseCommand extends Command
 					'checked' => "checked=true",
 					'order' => \$this->service->count() + 1,
 				];
-				return view('{$viewBase}.form', \$result);
+				return view('$viewBase.form', \$result);
 			}
 
 			/**
@@ -244,7 +244,7 @@ class MakeFileBaseCommand extends Command
 			{
 				try {
 					\$this->service->updateOrStore(\$request->validated(), \$id);
-					return redirect()->route('{$plural}.index');
+					return redirect()->route('$plural.index');
 				} catch (\Exception \$e) {
 					return redirect()->back()->withInput()->with('error', 'Update failed, please try again');
 				}
@@ -293,27 +293,27 @@ class MakeFileBaseCommand extends Command
 		PHP;
 	}
 
-	private function requestStub($name, $type, $action): string
-    {
-		$namespace = "App\\Http\\Requests\\{$type}\\{$name}";
-		$className = "{$action}{$name}Request";
+	private function requestStub(string $name, string $type, string $action): string
+	{
+		$namespace = "App\\Http\\Requests\\$type\\$name";
+		$className = "$action{$name}Request";
 
 		return <<<PHP
 		<?php
 
-		namespace {$namespace};
+		namespace $namespace;
 
 		use Illuminate\Contracts\Validation\ValidationRule;
 		use Illuminate\Foundation\Http\FormRequest;
 
-		class {$className} extends FormRequest
+		class $className extends FormRequest
 		{
 			/**
 			* Determine if the user is authorized to make this request.
 			*/
 			public function authorize(): bool
 			{
-				return false;
+				return true;
 			}
 
 			/**
@@ -344,17 +344,19 @@ class MakeFileBaseCommand extends Command
 
 	private function serviceStub(string $name, string $type): string
 	{
-		$namespace = "App\\Http\\Services\\{$type}";
-		$repository = "App\\Http\\Repositories\\{$type}\\{$name}Repository";
+		$namespace = "App\\Http\\Services\\$type";
+		$repository = "App\\Http\\Repositories\\$type\\{$name}Repository";
+		$model = "App\\Models\\$name";
 
 		return <<<PHP
 		<?php
 
-		namespace {$namespace};
+		namespace $namespace;
 
 		use App\Base\BaseService;
 		use App\Http\Helpers\LoggerHelper;
-		use {$repository};
+		use $repository;
+		use $model;
 		use Illuminate\Support\Facades\DB;
 		use Throwable;
 
@@ -395,12 +397,12 @@ class MakeFileBaseCommand extends Command
 			*
 			* @throws Throwable
 			*/
-			public function updateOrStore(array \$data, int|string|null \$id = null): array
+			public function updateOrStore(array \$data, int|string|null \$id = null): $name | array
 			{
+				\$channel = \$id ? '{$name}Update' : '{$name}Store';
 				DB::beginTransaction();
 				try {
 					\$data['id'] = \$id;
-					\$channel = \$id ? '{$name}Update' : '{$name}Store';
 					\$this->logger->setChannel(\$channel)->log('Param', \$data);
 					\$data = \$this->repository->updateOrStore(\$data);
 					DB::commit();
@@ -494,16 +496,16 @@ class MakeFileBaseCommand extends Command
 
 	private function repositoryStub(string $name, string $type): string
 	{
-		$namespace = "App\\Http\\Repositories\\{$type}";
-		$model = "App\\Models\\{$name}";
+		$namespace = "App\\Http\\Repositories\\$type";
+		$model = "App\\Models\\$name";
 
 		return <<<PHP
 		<?php
 
-		namespace {$namespace};
+		namespace $namespace;
 
 		use App\Base\BaseRepository;
-		use {$model};
+		use $model;
 		use Illuminate\Database\Eloquent\Model;
 		use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -516,7 +518,7 @@ class MakeFileBaseCommand extends Command
 
 			public function model(): string
 			{
-				return {$name}::class;
+				return $name::class;
 			}
 
 			/**
@@ -565,11 +567,21 @@ class MakeFileBaseCommand extends Command
 
 		namespace App\Models;
 
+		use Illuminate\Database\Eloquent\Attributes\Fillable;
 		use Illuminate\Database\Eloquent\Model;
 
-		class {$name} extends Model
+		#[Fillable(['id', 'code', 'name', 'order', 'status', 'created_at', 'updated_at'])]
+		class $name extends Model
 		{
 			protected \$table = '{$this->tableName($name)}';
+
+			public \$incrementing = false;
+
+			public \$sortable = ['order'];
+
+			public \$casts = [
+				'status' => 'boolean',
+			];
 		}
 		PHP;
 	}

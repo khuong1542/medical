@@ -3,28 +3,25 @@
 namespace App\Http\Services\Admin;
 
 use App\Base\BaseService;
-use App\Enums\FacilityType;
-use App\Http\Helpers\FileHelper;
 use App\Http\Helpers\LoggerHelper;
-use App\Http\Repositories\Admin\FacilityRepository;
-use App\Models\Facility;
+use App\Http\Repositories\Admin\SpecialtyRepository;
+use App\Models\Specialty;
 use Illuminate\Support\Facades\DB;
 use Throwable;
-use Exception;
 
-class FacilityService extends BaseService
+class SpecialtyService extends BaseService
 {
 	private LoggerHelper $logger;
 	public function __construct()
 	{
 		parent::__construct();
 		$this->logger = new LoggerHelper;
-		$this->logger->setFileName('FacilityService');
+		$this->logger->setFileName('SpecialtyService');
 	}
 
 	public function repository(): string
 	{
-		return FacilityRepository::class;
+		return SpecialtyRepository::class;
 	}
 
 	/**
@@ -36,7 +33,7 @@ class FacilityService extends BaseService
 	public function loadList(array $payload): mixed
 	{
 		$conditions = [];
-		$options = $this->buildListOptions($payload);
+		$options = $this->buildListOptions($payload, ['name', 'code']);
 		return $this->repository->list($conditions, [], $options);
 	}
 
@@ -49,21 +46,17 @@ class FacilityService extends BaseService
 	*
 	* @throws Throwable
 	*/
-	public function updateOrStore(array $data, int|string|null $id = null): Facility | array
+	public function updateOrStore(array $data, int|string|null $id = null): Specialty | array
 	{
-		$channel = $id ? 'FacilityUpdate' : 'FacilityStore';
+		$channel = $id ? 'SpecialtyUpdate' : 'SpecialtyStore';
 		DB::beginTransaction();
 		try {
-			if (isset($data['images']) && $data['images'] instanceof \Illuminate\Http\UploadedFile) {
-				$images = FileHelper::upload($data['images'], 'attach-file/facilities');
-				$data['images'] = json_encode($images);
-			}
 			$data['id'] = $id;
-			$this->logger->setChannel($channel)->log('Params', $data);
+			$this->logger->setChannel($channel)->log('Param', $data);
 			$data = $this->repository->updateOrStore($data);
 			DB::commit();
 			return $data;
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			DB::rollback();
 			$this->logger->setChannel($channel)->log('Error', [$e->getMessage(), $e->getFile(), $e->getLine()]);
 			throw $e;
@@ -83,15 +76,15 @@ class FacilityService extends BaseService
 		$arrIds = explode(',', $payload['ids']);
 		DB::beginTransaction();
 		try {
-			$this->logger->setChannel('FacilityDelete')->log('Params', $arrIds);
+			$this->logger->setChannel('SpecialtyDelete')->log('Params', $arrIds);
 			foreach ($arrIds as $id) {
 				$this->repository->deleteChild($id);
 			}
 			DB::commit();
 			return array('status' => true, 'message' => 'Deleted Successfully.');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			DB::rollback();
-			$this->logger->setChannel('FacilityDelete')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
+			$this->logger->setChannel('SpecialtyDelete')->log('Messages', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
 			return array('status' => false, 'message' => 'Deleted Failed.!');
 		}
 	}
@@ -111,12 +104,12 @@ class FacilityService extends BaseService
 			$this->logger->setChannel('UpdateOrder')->log('Params', $payload);
 			$data = $this->repository->select('*')->orderBy('order')->get();
 			$i = 1;
-			foreach ($data as $value) {
+			foreach ($data as $key => $value) {
 				$value->update(['order' => $i++]);
 			}
 			DB::commit();
 			return array('status' => true, 'message' => 'Updated Successfully.!');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			DB::rollback();
 			$this->logger->setChannel('UpdateOrder')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
 			return array('status' => false, 'message' => 'Updated Failed.!');
@@ -140,15 +133,10 @@ class FacilityService extends BaseService
 			$this->repository->update($id, ['status' => $payload['status']]);
 			DB::commit();
 			return array('status' => true, 'message' => 'Updated Successfully.!');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			DB::rollback();
 			$this->logger->setChannel('ChangeStatus')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
 			return array('status' => false, 'message' => 'Updated Failed.!');
 		}
-	}
-
-	public function getTypes()
-	{
-		return FacilityType::cases();
 	}
 }

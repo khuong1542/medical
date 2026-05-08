@@ -3,18 +3,16 @@
 		<col width="5%">
 		<col width="20%">
 		<col width="20%">
-		<col width="15%">
+		<col width="20%">
 		<col width="15%">
 		<col width="10%">
 		<col width="10%">
-		<col width="5%">
 	</colgroup>
 	<thead>
 		<tr>
 			<th><input type="checkbox" name="chk_all_item_id" onclick="checkbox_all_item_id(document.forms[0].chk_item_id);"></th>
+			<th>@lang('admin/shared.code')</th>
 			<th>@lang('admin/shared.name')</th>
-			<th>@lang('admin/messages.doctor.facilities')</th>
-			<th>@lang('admin/messages.doctor.specialty')</th>
 			<th>@lang('admin/shared.image')</th>
 			<th>@lang('admin/shared.order')</th>
 			<th>@lang('admin/shared.status')</th>
@@ -30,9 +28,8 @@
 		@endphp
 		<tr id="tr_row_{{ $key }}">
 			<td align="center" class="align-middle"><input type="checkbox" ondblclick="" onclick="{select_checkbox_row(this);}" name="chk_item_id" value="{{$id}}"></td>
+			<td class="align-middle text-break">{{ $data->code ?? '' }}</td>
 			<td class="align-middle text-break">{{ $data->name ?? '' }}</td>
-			<td class="align-middle text-break">{{ $data->facilities?->name ?? '' }}</td>
-			<td class="align-middle text-break">{{ $data->specialty?->name ?? '' }}</td>
 			<td align="center" class="align-middle">
 				@if(isset($images))
 				<img src="{{ $images['url'] ?? '' }}" alt="{{ $images['name'] }}" width="100px">
@@ -46,7 +43,7 @@
 				</label>
 			</td>
 			<td align="center" class="align-middle">
-				<a href="{{ route('doctors.edit', $id)}}" class="btn btn-warning btn-sm"><i class='fa-solid fa-edit'></i></a>
+				<a href="{{ route('facilities.edit', $id)}}" class="btn btn-warning btn-sm"><i class='fa-solid fa-edit'></i></a>
 			</td>
 		</tr>
 		@endforeach

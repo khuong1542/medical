@@ -51,6 +51,12 @@ return array(
                 'permission' => false,
                 'children'   => false,
             ),
+            'specialties' => array(
+                'name'       => 'admin/messages.sidebar.specialty',
+                'icon'       => 'fa-solid fa-sitemap',
+                'permission' => false,
+                'children'   => false,
+            ),
             'doctors' => array(
                 'name'       => 'admin/messages.sidebar.doctor',
                 'icon'       => 'fa-solid fa-sitemap',

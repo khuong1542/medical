@@ -4,6 +4,7 @@ namespace App\Base;
 
 use Illuminate\Container\Container as App;
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,9 @@ abstract class BaseService
 	 */
 	protected $repository;
 
+	/**
+	 * @throws Exception
+	 */
 	public function __construct()
 	{
 		$this->app = new App();
@@ -31,10 +35,11 @@ abstract class BaseService
 	 *
 	 * @return class-string<TRepository>
 	 */
-	abstract public function repository();
+	abstract public function repository(): string;
 
 	/**
 	 * @return Repository
+	 * @throws BindingResolutionException
 	 */
 	public function setRepository(): void
 	{
@@ -305,19 +310,16 @@ abstract class BaseService
 		$this->repository->detachMany($model, $relation, $ids);
 	}
 
-    protected function buildListOptions(array $params, array $searchFields = ['name', 'code']): array
-    {
-        $sortField = $params['sort'] ?? 'order';
-        $sortType = (isset($params['sortType']) && $params['sortType'] == 1) ? 'asc' : 'desc';
-
-        return [
-            'page' => $params['page'] ?? OFFSET,
-            'limit' => $params['limit'] ?? LIMIT,
-            'orderBy' => [
-                $sortField => $sortType,
-            ],
-            'keyword' => $params['keyword'] ?? '',
-            'search_field' => $searchFields,
-        ];
-    }
+	protected function buildListOptions(array $params = [], array $searchFields = ['name', 'code']): array
+	{
+		return [
+			'page' => $params['page'] ?? OFFSET,
+			'limit' => isset($params['all']) && $params['all'] ? null : $params['limit'] ?? LIMIT,
+			'orderBy' => $params['orderBy'] ?? [
+				'order' => 'asc'
+			],
+			'keyword' => $params['keyword'] ?? '',
+			'search_field' => $searchFields,
+		];
+	}
 }

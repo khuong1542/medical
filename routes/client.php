@@ -7,4 +7,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/doctors', [DoctorController::class, 'index']);
+Route::get('/doctors/booking/{code}', [DoctorController::class, 'booking']);
 Route::get('/services', [ServiceController::class, 'index']);

@@ -1,10 +1,10 @@
 @extends('admin.index')
 
 @section('script')
-<script src="{{ asset('assets/admin/js/pages/facility.js') }}"></script>
+<script src="{{ asset('assets/admin/js/pages/specialty.js') }}"></script>
 <script>
 	let baseUrl = "{{ url('') }}";
-	let classJS = new JS_Facility(baseUrl, 'admin', 'facilities');
+	let classJS = new JS_Specialty(baseUrl, 'admin', 'specialties');
 	jQuery(document).ready(($) => classJS.loadIndex());
 </script>
 @endsection
@@ -15,9 +15,9 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="page-title-box d-sm-flex align-items-center justify-content-between">
-					<h4 class="mb-sm-0">@lang('admin/messages.sidebar.facility')</h4>
+					<h4 class="mb-sm-0">@lang('admin/messages.sidebar.specialty')</h4>
 					<div class="page-title-right">
-						@include('admin.layouts.index.form', ['order' => true, 'add' => ['url' => route('facilities.create')], 'edit' => true, 'delete' => true])
+						@include('admin.layouts.index.form', ['order' => true, 'add' => ['url' => route('specialties.create')], 'edit' => true, 'delete' => true])
 					</div>
 				</div>
 			</div>

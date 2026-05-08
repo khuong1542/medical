@@ -15,7 +15,6 @@ return [
 	'phone' => 'Phone',
 	'note' => 'Note',
 	'description' => 'Description',
-	'image' => 'Image',
 	'order' => 'Order',
 	'status' => 'Status',
 	'visibility' => 'Visibility',
@@ -24,6 +23,8 @@ return [
 	'image' => 'Image',
 	'choose-image' => 'Choose image',
 	'max-file' => 'Max file',
+
+	'select-item' => 'Select a item',
 
 	'save' => 'Save',
 	'close' => 'Close',
