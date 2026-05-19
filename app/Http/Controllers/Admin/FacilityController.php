@@ -49,7 +49,7 @@ class FacilityController extends Controller
 	public function create()
 	{
 		$result = [
-			'types' => $this->service->getTypes(),
+			'types' => $this->service->getFacility(),
 			'order' => $this->service->count() + 1,
 		];
 		return view('admin.pages.facilities.form', $result);
@@ -91,7 +91,7 @@ class FacilityController extends Controller
 	{
 		$result = [
 			'data' => $this->service->find($id),
-			'types' => $this->service->getTypes(),
+			'types' => $this->service->getFacility(),
 			'order' => $this->service->count() + 1,
 		];
 		return view('admin.pages.facilities.form', $result);

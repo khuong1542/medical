@@ -9,11 +9,11 @@
 			<ul class="pagination pagination-rounded" style="margin: 0;white-space: nowrap;text-align: center;display: flex;justify-content: center;">
 				{{-- Previous Page Link --}}
 				@if ($paginator->onFirstPage())
-				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='bx bxs-chevrons-left'></i></span></li>
-				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='bx bxs-chevron-left'></i></span></li>
+				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='fa-solid fa-angles-left'></i></span></li>
+				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='fa-solid fa-angle-left'></i></span></li>
 				@else
-				<li class="paginate_button page-item previous"><a page="1" class="page-link datatable-buttons" rel="prev"><i class='bx bxs-chevrons-left'></i></a></li>
-				<li class="paginate_button page-item previous"><a page="{{$paginator->currentPage() - 1}}" class="page-link datatable-buttons" rel="prev"><i class='bx bxs-chevron-left'></i></a></li>
+				<li class="paginate_button page-item previous"><a page="1" class="page-link datatable-buttons" rel="prev"><i class='fa-solid fa-angles-left'></i></a></li>
+				<li class="paginate_button page-item previous"><a page="{{$paginator->currentPage() - 1}}" class="page-link datatable-buttons" rel="prev"><i class='fa-solid fa-angle-left'></i></a></li>
 				@endif
 
 				{{-- Pagination Elements --}}
@@ -37,20 +37,20 @@
 
 				{{-- Next Page Link --}}
 				@if ($paginator->hasMorePages())
-				<li class="paginate_button page-item next"><a page="{{$paginator->currentPage() + 1}}" class="page-link datatable-buttons" rel="next"><i class='bx bxs-chevron-right'></i></a></li>
-				<li class="paginate_button page-item next"><a page="{{$paginator->lastPage()}}" class="page-link datatable-buttons" rel="next"><i class='bx bxs-chevrons-right'></i></a></li>
+				<li class="paginate_button page-item next"><a page="{{$paginator->currentPage() + 1}}" class="page-link datatable-buttons" rel="next"><i class='fa-solid fa-angle-right'></i></a></li>
+				<li class="paginate_button page-item next"><a page="{{$paginator->lastPage()}}" class="page-link datatable-buttons" rel="next"><i class='fa-solid fa-angles-right'></i></a></li>
 				@else
-				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='bx bxs-chevron-right'></i></span></li>
-				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='bx bxs-chevrons-right'></i></span></li>
+				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='fa-solid fa-angle-right'></i></span></li>
+				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='fa-solid fa-angles-right'></i></span></li>
 				@endif
 			</ul>
 			@else
 			<ul class="pagination pagination-rounded" style="margin: 0;white-space: nowrap;text-align: center;display: flex;justify-content: center;">
-				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='bx bxs-chevrons-left'></i></span></li>
-				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='bx bxs-chevron-left'></i></span></li>
+				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='fa-solid fa-angles-left'></i></span></li>
+				<li class="paginate_button page-item previous disabled"><span class="page-link"><i class='fa-solid fa-angle-left'></i></span></li>
 				<li class="page-item active"><span class="page-link">1</span></li>
-				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='bx bxs-chevron-right'></i></span></li>
-				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='bx bxs-chevrons-right'></i></span></li>
+				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='fa-solid fa-angle-right'></i></span></li>
+				<li class="paginate_button page-item next disabled"><span class="page-link"><i class='fa-solid fa-angles-right'></i></span></li>
 			</ul>
 			@endif
 		</div>

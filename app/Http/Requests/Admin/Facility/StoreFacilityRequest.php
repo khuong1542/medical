@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin\Facility;
 
-use App\Enums\FacilityType;
+use App\Enums\FacilityEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -32,7 +32,7 @@ class StoreFacilityRequest extends FormRequest
 				'string',
 				Rule::unique('facilities', 'code')->ignore($this->route('id')),
 			],
-			'type' => ['required', new Enum(FacilityType::class)],
+			'type' => ['required', new Enum(FacilityEnum::class)],
 			'images' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
 			'tax_code' => 'nullable|string|max:50',
 			'address' => 'nullable|string',

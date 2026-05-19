@@ -28,7 +28,7 @@ class DoctorController extends Controller
 		];
 		return [
 			'arrData' => view('admin.pages.doctors.list', $result)->render(),
-			'perPage' => $request->offset ?? OFFSET,
+			'limit' => $request->limit ?? LIMIT,
 		];
 	}
 
@@ -70,6 +70,8 @@ class DoctorController extends Controller
 		$data = $this->service->find($id);
 		$result = [
 			'data' => $data,
+			'specialties' => $this->service->getSpecialties(),
+			'facilities' => $this->service->getFacilities(),
 			'checked' => "checked=true",
 			'order' => $this->service->count() + 1,
 		];

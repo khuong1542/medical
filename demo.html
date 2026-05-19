@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Booking Steps</title>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: Arial, sans-serif;
+		}
+
+		body {
+			background: #f5f5f5;
+			padding: 40px;
+		}
+
+		.booking-wrapper {
+			max-width: 900px;
+			margin: auto;
+			background: #fff;
+			border-radius: 16px;
+			padding: 40px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		}
+
+		/* =========================
+		   STEP
+		========================= */
+
+		.steps {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			margin-bottom: 50px;
+		}
+
+		.step {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		/* STEP CUỐI */
+		.step:last-child {
+			flex: unset;
+			width: 44px;
+		}
+
+		/* PHẦN ĐẦU */
+		.step-head {
+			display: flex;
+			align-items: center;
+		}
+
+		/* CIRCLE */
+		.step-circle {
+			min-width: 44px;
+			width: 44px;
+			height: 44px;
+
+			border-radius: 50%;
+
+			background: #ddd;
+			color: #fff;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			font-size: 18px;
+			font-weight: bold;
+
+			transition: 0.3s;
+		}
+
+		/* LINE */
+		.step-line {
+			flex: 1;
+			height: 4px;
+
+			background: #ddd;
+
+			margin: 0 16px;
+
+			border-radius: 999px;
+
+			transition: 0.3s;
+		}
+
+		.step:last-child .step-line {
+			display: none;
+		}
+
+		/* TITLE */
+		.step-title {
+			width: 44px;
+			text-align: center;
+
+			margin-top: 14px;
+
+			font-size: 16px;
+			font-weight: 500;
+
+			color: #777;
+		}
+
+		/* ACTIVE */
+		.step.active .step-circle,
+		.step.completed .step-circle {
+			background: #2563eb;
+		}
+
+		.step.active .step-title,
+		.step.completed .step-title {
+			color: #2563eb;
+			font-weight: bold;
+		}
+
+		/* ACTIVE LINE */
+		.step.completed .step-line {
+			background: #2563eb;
+		}
+
+		/* =========================
+		   FORM
+		========================= */
+
+		.step-content {
+			display: none;
+			animation: fade 0.3s ease;
+		}
+
+		.step-content.active {
+			display: block;
+		}
+
+		@keyframes fade {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: bold;
+		}
+
+		input,
+		select,
+		textarea {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			outline: none;
+			font-size: 15px;
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 100px;
+		}
+
+		/* =========================
+		   BUTTON
+		========================= */
+
+		.actions {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 30px;
+		}
+
+		button {
+			border: none;
+			padding: 12px 24px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 15px;
+			transition: 0.2s;
+		}
+
+		button:hover {
+			opacity: 0.9;
+		}
+
+		.btn-back {
+			background: #e5e7eb;
+		}
+
+		.btn-next {
+			background: #2563eb;
+			color: white;
+		}
+
+		.btn-submit {
+			background: #16a34a;
+			color: white;
+		}
+
+		button:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="booking-wrapper">
+
+		<!-- =========================
+		     STEPS
+		========================= -->
+
+		<div class="steps">
+
+			<!-- STEP 1 -->
+			<div class="step active">
+
+				<div class="step-head">
+
+					<div class="step-circle">
+						1
+					</div>
+
+					<div class="step-line"></div>
+
+				</div>
+
+				<div class="step-title">
+					Thông tin
+				</div>
+
+			</div>
+
+			<!-- STEP 2 -->
+			<div class="step">
+
+				<div class="step-head">
+
+					<div class="step-circle">
+						2
+					</div>
+
+					<div class="step-line"></div>
+
+				</div>
+
+				<div class="step-title">
+					Dịch vụ
+				</div>
+
+			</div>
+
+			<!-- STEP 3 -->
+			<div class="step">
+
+				<div class="step-head">
+
+					<div class="step-circle">
+						3
+					</div>
+
+				</div>
+
+				<div class="step-title">
+					Xác nhận
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- =========================
+		     FORM
+		========================= -->
+
+		<form id="bookingForm">
+
+			<!-- STEP 1 -->
+			<div class="step-content active">
+
+				<div class="form-group">
+					<label>Họ tên</label>
+
+					<input
+						type="text"
+						placeholder="Nhập họ tên">
+				</div>
+
+				<div class="form-group">
+					<label>Số điện thoại</label>
+
+					<input
+						type="text"
+						placeholder="Nhập số điện thoại">
+				</div>
+
+			</div>
+
+			<!-- STEP 2 -->
+			<div class="step-content">
+
+				<div class="form-group">
+
+					<label>Chọn dịch vụ</label>
+
+					<select>
+						<option>
+							Khám tổng quát
+						</option>
+
+						<option>
+							Khám nội tiết
+						</option>
+
+						<option>
+							Khám thần kinh
+						</option>
+					</select>
+
+				</div>
+
+				<div class="form-group">
+
+					<label>Ghi chú</label>
+
+					<textarea
+						placeholder="Nhập ghi chú"></textarea>
+
+				</div>
+
+			</div>
+
+			<!-- STEP 3 -->
+			<div class="step-content">
+
+				<h2>
+					Xác nhận đặt lịch
+				</h2>
+
+				<p style="margin-top: 15px;">
+					Kiểm tra lại thông tin trước khi gửi.
+				</p>
+
+			</div>
+
+			<!-- ACTION -->
+			<div class="actions">
+
+				<button
+					type="button"
+					class="btn-back"
+					id="backBtn">
+
+					Back
+
+				</button>
+
+				<button
+					type="button"
+					class="btn-next"
+					id="nextBtn">
+
+					Next
+
+				</button>
+
+			</div>
+
+		</form>
+
+	</div>
+
+	<script>
+		const steps =
+			document.querySelectorAll('.step');
+
+		const contents =
+			document.querySelectorAll('.step-content');
+
+		const backBtn =
+			document.getElementById('backBtn');
+
+		const nextBtn =
+			document.getElementById('nextBtn');
+
+		let currentStep = 0;
+
+		function updateStep() {
+
+			/* STEP UI */
+			steps.forEach((step, index) => {
+
+				step.classList.remove(
+					'active',
+					'completed'
+				);
+
+				if (index < currentStep) {
+					step.classList.add(
+						'completed'
+					);
+				}
+
+				if (index === currentStep) {
+					step.classList.add(
+						'active'
+					);
+				}
+			});
+
+			/* CONTENT */
+			contents.forEach((content, index) => {
+
+				content.classList.toggle(
+					'active',
+					index === currentStep
+				);
+			});
+
+			/* BUTTON */
+			backBtn.disabled =
+				currentStep === 0;
+
+			if (
+				currentStep ===
+				contents.length - 1
+			) {
+
+				nextBtn.textContent =
+					'Submit';
+
+				nextBtn.classList.add(
+					'btn-submit'
+				);
+
+			} else {
+
+				nextBtn.textContent =
+					'Next';
+
+				nextBtn.classList.remove(
+					'btn-submit'
+				);
+			}
+		}
+
+		/* NEXT */
+		nextBtn.addEventListener(
+			'click',
+			() => {
+
+				if (
+					currentStep <
+					contents.length - 1
+				) {
+
+					currentStep++;
+
+					updateStep();
+
+				} else {
+
+					alert(
+						'Đặt lịch thành công!'
+					);
+				}
+			}
+		);
+
+		/* BACK */
+		backBtn.addEventListener(
+			'click',
+			() => {
+
+				if (currentStep > 0) {
+
+					currentStep--;
+
+					updateStep();
+				}
+			}
+		);
+
+		updateStep();
+	</script>
+
+</body>
+
+</html>

@@ -24,6 +24,7 @@ class MakeModuleClientCommand extends Command
 		$this->createService($name, $type);
 		$this->createRepository($name, $type);
 		$this->createModel($name);
+		$this->createView($name);
 
 		$this->components->info("Generated $name for $type successfully.");
 		return self::SUCCESS;
@@ -59,6 +60,18 @@ class MakeModuleClientCommand extends Command
 		$path = app_path("Models\\$name.php");
 
 		$this->put($path, $this->modelStub($name));
+	}
+
+	private function createView(string $name): void
+	{
+		$lower = Str::lower($name);
+		$plural = Str::plural($lower);
+
+		$viewBase = "client\\pages\\$plural";
+
+		$pathIndex = resource_path("views\\$viewBase\\index.blade.php");
+
+		$this->put($pathIndex, $this->viewStub($name));
 	}
 
 	private function put(string $path, string $content): void
@@ -194,13 +207,43 @@ class MakeModuleClientCommand extends Command
 		PHP;
 	}
 
+	private function viewStub(string $name): string
+	{
+		$lower = strtolower($name);
+
+		$pathCss = "assets/admin/css/pages/$lower.css";
+		$pathJs = "assets/client/js/pages/$lower.js";
+
+		$urlCss = '';
+		$urlJs = '';
+
+		if (File::exists(base_path($pathCss))) {
+			$urlCss = asset($pathCss);
+		}
+
+		if (File::exists(base_path($pathJs))) {
+			$urlJs = asset($pathJs);
+		}
+
+		return <<<PHP
+		@extends('client.index')
+
+		@section('style')
+			<link rel="stylesheet" href="$urlCss">
+		@endsection
+
+		@section('content')
+
+		@endsection
+
+		@section('script')
+			<script src="$urlJs"></script>
+		@endsection
+		PHP;
+	}
+
 	private function tableName(string $name): string
 	{
 		return Str::snake(Str::pluralStudly($name));
 	}
-
-	protected function formatPath(string $path): string
-{
-	return str_replace(base_path() . DIRECTORY_SEPARATOR, '', $path);
-}
 }

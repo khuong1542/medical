@@ -3,23 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable(['id', 'facility_id', 'specialty_id', 'code', 'name', 'images', 'email', 'phone', 'experience_years', 'description', 'order', 'status', 'created_at', 'updated_at'])]
 
 class Doctor extends Model
 {
+	use HasFactory;
+
 	public $incrementing = false;
 
 	public $sortable = ['order'];
 
 	public function facilities()
 	{
-		return $this->belongsTo(Facility::class);
+		return $this->belongsTo(Facility::class, 'facility_id', 'id');
 	}
 
 	public function specialty()
 	{
-		return $this->belongsTo(Specialty::class);
+		return $this->belongsTo(Specialty::class, 'specialty_id', 'id');
 	}
 }

@@ -142,7 +142,7 @@
 					</div>
 				</div>
 			</div>
-			@include('admin.layouts.form.button', ['url' => route('facilities.index')])
+			@include('admin.layouts.form.button', ['url' => route('specialties.index')])
 		</form>
 	</div>
 </div>

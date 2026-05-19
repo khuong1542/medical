@@ -1,18 +1,8 @@
 @extends('client.index')
 
 @section('content')
-<div class="container-fluid page-header py-5 mb-5 wow fadeIn">
-	<div class="container py-5">
-		<h1 class="display-3 text-white mb-3  slideInDown">Doctors</h1>
-		<nav aria-label="breadcrumb animated slideInDown">
-			<ol class="breadcrumb text-uppercase mb-0">
-				<li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
-				<li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
-				<li class="breadcrumb-item text-primary active" aria-current="page">Doctors</li>
-			</ol>
-		</nav>
-	</div>
-</div>
+
+@include('client.layouts.breadcrumb')
 
 <div class="container my-4">
 	<div class="text-center mx-auto mb-5 wow fadeInUp">
@@ -54,6 +44,33 @@
 		<div class="col-md-9">
 			<div class="doctors">
 				<div class="row gy-4">
+					@if(isset($datas) && count($datas) > 0)
+						@foreach($datas as $doctor)
+							@php
+								$images = json_decode(($doctor->images ?? ''), true);
+							@endphp
+							<div class="col-lg-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+								<div class="team-member d-flex align-items-start">
+									<div class="pic">
+										<a href="{{ route('client.doctors.detail', ['code' => $doctor->code]) }}">
+											<img class="img-fluid" src="{{ $images['url'] ?? '' }}" alt="{{ $images['name'] ?? '' }}">
+										</a>
+									</div>
+									<div class="member-info">
+										<a href="{{ route('client.doctors.detail', ['code' => $doctor->code]) }}">
+											<h4>{{ $doctor->name ?? '' }}</h4>
+										</a>
+										<span>{{ $doctor->specialty?->name ?? '' }}</span>
+										<p>{{ $doctor->description ?? '' }}</p>
+										<div class="mt-3">
+											<button class="btn btn-primary">Book Now</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						@endforeach
+					@endif
+
 					<div class="col-lg-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
 						<div class="team-member d-flex align-items-start">
 							<div class="pic"><img src="assets/client/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>

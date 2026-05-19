@@ -30,9 +30,6 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-md-6">
-									{!! $categories ?? '' !!}
-								</div>
-								<div class="col-md-6">
 									@include('admin.layouts.search.button')
 								</div>
 							</div>

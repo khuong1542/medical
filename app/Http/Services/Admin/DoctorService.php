@@ -6,13 +6,19 @@ use App\Base\BaseService;
 use App\Http\Helpers\FileHelper;
 use App\Http\Helpers\LoggerHelper;
 use App\Http\Repositories\Admin\DoctorRepository;
+use App\Http\Repositories\Admin\FacilityRepository;
+use App\Http\Repositories\Admin\SpecialtyRepository;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class DoctorService extends BaseService
 {
 	private LoggerHelper $logger;
-	public function __construct()
+	public function __construct(
+		private readonly SpecialtyRepository $specialtyRepository,
+		private readonly FacilityRepository $facilityRepository
+	)
 	{
 		parent::__construct();
 		$this->logger = new LoggerHelper;
@@ -49,7 +55,7 @@ class DoctorService extends BaseService
 	 *
 	 * @throws Throwable
 	 */
-	public function updateOrStore(array $data, string|int|null $id = null): array
+	public function updateOrStore(array $data, string|int|null $id = null): Doctor | array
 	{
 		DB::beginTransaction();
 		try {
@@ -146,5 +152,15 @@ class DoctorService extends BaseService
 			$this->logger->setChannel('ChangeStatus')->log('Message', ['Line:' => $e->getLine(), 'Message:' => $e->getMessage(), 'FileName:' => $e->getFile()]);
 			return array('status' => false, 'message' => 'Update Failed!');
 		}
+	}
+
+	public function getSpecialties()
+	{
+		return $this->specialtyRepository->list();
+	}
+
+	public function getFacilities()
+	{
+		return $this->facilityRepository->list();
 	}
 }

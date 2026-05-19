@@ -3,7 +3,7 @@
 namespace App\Http\Services\Admin;
 
 use App\Base\BaseService;
-use App\Enums\FacilityType;
+use App\Enums\FacilityEnum;
 use App\Http\Helpers\FileHelper;
 use App\Http\Helpers\LoggerHelper;
 use App\Http\Repositories\Admin\FacilityRepository;
@@ -147,8 +147,8 @@ class FacilityService extends BaseService
 		}
 	}
 
-	public function getTypes()
+	public function getFacility()
 	{
-		return FacilityType::cases();
+		return FacilityEnum::cases();
 	}
 }

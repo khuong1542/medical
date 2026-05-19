@@ -1,6 +1,5 @@
 <header id="header" class="header sticky-top">
 	<div class="branding d-flex align-items-center">
-
 		<div class="container position-relative d-flex align-items-center justify-content-between">
 			<a href="/" class="logo d-flex align-items-center me-auto">
 				<h1 class="sitename">Medilab</h1>
@@ -13,10 +12,10 @@
 					<li><a href="/services">Services</a></li>
 					<li><a href="">Departments</a></li>
 					<li><a href="/doctors">Doctors</a></li>
-					<li class="dropdown"><a href=""><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+					<li class="dropdown"><a href=""><span>Dropdown</span> <i class="fa-solid fa-chevron-down toggle-dropdown"></i></a>
 						<ul>
 							<li><a href="">Dropdown 1</a></li>
-							<li class="dropdown"><a href=""><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+							<li class="dropdown"><a href=""><span>Deep Dropdown</span> <i class="fa-solid fa-chevron-down toggle-dropdown"></i></a>
 								<ul>
 									<li><a href="">Deep Dropdown 1</a></li>
 									<li><a href="">Deep Dropdown 2</a></li>
@@ -32,7 +31,7 @@
 					</li>
 					<li><a href="">Contact</a></li>
 				</ul>
-				<i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+				<i class="mobile-nav-toggle d-xl-none fa-solid fa-bars "></i>
 			</nav>
 			<a class="cta-btn d-none d-sm-block" href="">Make an Appointment</a>
 		</div>

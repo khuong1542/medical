@@ -1,0 +1,82 @@
+.booking-wizard {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.booking-wizard .form-wizard-steps li {
+	list-style: none;
+	position: relative;
+}
+
+.booking-wizard .form-wizard-steps li::after {
+	content: "";
+	width: 70%;
+	height: 1px;
+	border: 1px dashed #e9eff3;
+	position: absolute;
+	right: -49px;
+	top: 12px;
+}
+
+.booking-wizard .form-wizard-steps li:last-child::after {
+	content: none;
+}
+
+.booking-wizard .form-wizard-steps li .profile-step .multi-steps {
+	width: 24px;
+	height: 24px;
+	background: #e9eff3;
+	color: #fff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	margin: 0 auto 8px;
+}
+
+.booking-wizard .form-wizard-steps li.progress-active .profile-step .multi-steps {
+	background: #316dff;
+}
+
+.booking-wizard .form-wizard-steps li.progress-activated .profile-step .multi-steps {
+	background: #04bd6c;
+}
+
+.booking-wizard li .profile-step {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.booking-widget .service-item {
+	border: 1px solid #e2e8f0;
+	padding: 16px;
+	border-radius: 10px;
+	position: relative;
+	margin-bottom: 16px;
+}
+
+.booking-widget .service-item.active {
+	border-color: #316dff;
+	background: #fcfcfc;
+}
+
+.booking-widget .service-item.active input {
+	opacity: 1;
+}
+
+.booking-widget .service-item input {
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0;
+}
+
+.booking-widget .service-item .form-check-input:checked {
+	background-color: #316dff;
+	border-color: #316dff;
+}

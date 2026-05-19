@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum FacilityType: int
+enum FacilityEnum: int
 {
 	case HOSPITAL = 1;
 	case CLINIC = 2;

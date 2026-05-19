@@ -35,7 +35,7 @@
 				</label>
 			</td>
 			<td align="center" class="align-middle">
-				<a href="{{ route('facilities.edit', $id)}}" class="btn btn-warning btn-sm"><i class='fa-solid fa-edit'></i></a>
+				<a href="{{ route('specialties.edit', $id)}}" class="btn btn-warning btn-sm"><i class='fa-solid fa-edit'></i></a>
 			</td>
 		</tr>
 		@endforeach

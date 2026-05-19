@@ -150,7 +150,12 @@ abstract class BaseRepository
 		$this->applyOrderBy($query, $options['orderBy'] ?? []);
 
 		return $options['limit']
-			? $query->paginate($options['limit'])
+			? $query->paginate(
+				$options['limit'],
+				['*'],
+				'page',
+				$options['page'] ?? OFFSET
+			)
 			: $query->get();
 	}
 

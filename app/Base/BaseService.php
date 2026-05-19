@@ -313,7 +313,7 @@ abstract class BaseService
 	protected function buildListOptions(array $params = [], array $searchFields = ['name', 'code']): array
 	{
 		return [
-			'page' => $params['page'] ?? OFFSET,
+			'page' => $params['offset'] ?? OFFSET,
 			'limit' => isset($params['all']) && $params['all'] ? null : $params['limit'] ?? LIMIT,
 			'orderBy' => $params['orderBy'] ?? [
 				'order' => 'asc'
