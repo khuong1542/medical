@@ -5,7 +5,7 @@
     display: inline-block;
     vertical-align: middle;
     /* font-size: 16px; */
-    font-size: .875rem;
+    /*font-size: .875rem;*/
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none
@@ -23,7 +23,7 @@
     left: -9999px;
     z-index: 1010;
     width: 100%;
-    border: 1px solid var(--base-color);
+    border: 1px solid var(--bs-border-color);
     border-top: 0;
     background: #fff;
     /* box-shadow: 0 4px 5px rgba(0, 0, 0, .15) */
@@ -58,7 +58,7 @@
     position: relative;
     display: block;
     overflow: hidden;
-    padding: 0 0 0 10px;
+    padding: 0 .75rem;
     /*height: 36px;*/
     border: 1px solid #ced4da;
     border-radius: 5px;
@@ -204,13 +204,13 @@
 }
 
 .chosen-container .chosen-results li.highlighted {
-    /* background-color: #567890; */
+    background-color: #567890;
     background-color: var(--base-color);
-    /* background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc)); */
-    /* background-image: -webkit-linear-gradient(#3875d7 20%, #2a62bc 90%); */
-    /* background-image: -moz-linear-gradient(#3875d7 20%, #2a62bc 90%); */
-    /* background-image: -o-linear-gradient(#3875d7 20%, #2a62bc 90%); */
-    /* background-image: linear-gradient(#3875d7 20%, #2a62bc 90%); */
+    background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
+    background-image: -webkit-linear-gradient(#3875d7 20%, #2a62bc 90%);
+    background-image: -moz-linear-gradient(#3875d7 20%, #2a62bc 90%);
+    background-image: -o-linear-gradient(#3875d7 20%, #2a62bc 90%);
+    background-image: linear-gradient(#3875d7 20%, #2a62bc 90%);
     color: #fff
 }
 
@@ -352,7 +352,7 @@
 
 .chosen-container-active.chosen-with-drop .chosen-single,
 .chosen-container-active.chosen-with-drop .chosen-choices {
-    border: 1px solid var(--base-color);
+    border: 1px solid var(--bs-border-color);
     -moz-border-radius-bottomright: 0;
     border-bottom-right-radius: 0;
     -moz-border-radius-bottomleft: 0;

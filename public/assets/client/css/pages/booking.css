@@ -44,11 +44,46 @@
 	background: #04bd6c;
 }
 
+.booking-wizard .form-wizard-steps li.progress-activated::after {
+	border-color: #04bd6c;
+}
+
 .booking-wizard li .profile-step {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+}
+
+.booking-widget .doctor-avatar {
+	width: 6rem;
+	height: 6rem;
+	position: relative;
+	display: inline-block;
+	border-radius: 6px;
+}
+
+.booking-widget .doctor-avatar.avatar-rounded {
+	border-radius: 50%;
+}
+
+.booking-widget .doctor-avatar.avatar-rounded img {
+	border-radius: 50%;
+}
+
+.booking-widget .doctor-avatar>img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+
+.booking-widget .booking-card .booking-step {
+	display: none;
+}
+
+.booking-widget .booking-card .booking-step.active {
+	display: block;
 }
 
 .booking-widget .service-item {
@@ -79,4 +114,20 @@
 .booking-widget .service-item .form-check-input:checked {
 	background-color: #316dff;
 	border-color: #316dff;
+}
+
+.booking-actions .btn-back-step {
+	display: none;
+}
+
+.booking-actions .btn-back-step.active {
+	display: block
+}
+
+.booking-actions:has(.btn-back-step.active) {
+	justify-content: space-between;
+}
+
+.booking-actions:not(:has(.btn-back-step.active)) {
+	justify-content: flex-end;
 }

@@ -16,6 +16,5 @@
 	@include('client.layouts.footer')<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
 	@include('client.layouts.script')
-	@yield('script')
 </body>
 </html>

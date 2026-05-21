@@ -37,6 +37,9 @@ class DoctorController extends Controller
 	 */
 	public function booking(string $code)
 	{
-		return view('client.pages.doctors.booking', compact('code'));
+		$result = [
+			'doctor' => $this->service->findBy(['code' => $code]),
+		];
+		return view('client.pages.doctors.booking', $result);
 	}
 }
